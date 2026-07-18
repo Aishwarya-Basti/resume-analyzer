@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Analyze Resume</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h2>AI Resume Analyzer</h2>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/analyze">Analyze</a>
+        <a href="#features">Features</a>
+    </nav>
+</header>
+
+<main class="page-shell">
+    <section class="hero hero-inline">
+        <div>
+            <p class="eyebrow">Resume intelligence</p>
+            <h1>Analyze your resume against the role you want.</h1>
+            <p>Paste your resume content or upload a file, and receive an ATS-style report with strengths, gaps, and better-fit job ideas.</p>
+        </div>
+        <div class="hero-card">
+            <h3>What you’ll get</h3>
+            <ul>
+                <li>ATS-friendly score</li>
+                <li>Strengths and growth areas</li>
+                <li>Suggested jobs and role fit</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="features" class="workspace-grid">
+        <div class="panel">
+            <div class="panel-head">
+                <div>
+                    <h3>Resume analysis</h3>
+                    <p>Use one simple form to paste content or upload a file and get your report.</p>
+                </div>
+                <span class="pill">Fast results</span>
+            </div>
+
+            <form class="stacked-form" th:action="@{/analyze}" th:object="${request}" method="post" enctype="multipart/form-data">
+                <input type="text" th:field="*{jobTitle}" placeholder="Example: Java Backend Developer" required>
+                <textarea th:field="*{resumeText}" placeholder="Paste your resume content here..."></textarea>
+                <label class="upload-inline" for="resumeFile">
+                    <span>Or upload a resume file</span>
+                    <input id="resumeFile" type="file" th:field="*{resumeFile}" accept=".txt,.md,.pdf,.doc,.docx">
+                </label>
+                <input type="number" th:field="*{experienceYears}" min="0" max="30" placeholder="Years of experience">
+                <button type="submit">Analyze Now</button>
+            </form>
+
+            <div th:if="${uploadError}" class="alert error" th:text="${uploadError}"></div>
+        </div>
+
+        <div class="panel results-panel" th:if="${result != null}">
+            <div class="panel-head">
+                <div>
+                    <h3>Analysis results</h3>
+                    <p>Your resume insights are ready.</p>
+                </div>
+                <span class="pill soft">Live report</span>
+            </div>
+
+            <div class="result-grid">
+                <div class="card">
+                    <h4>ATS Score</h4>
+                    <p class="metric" th:text="${result.atsScore} + '%'">0%</p>
+                </div>
+                <div class="card">
+                    <h4>Match Score</h4>
+                    <p class="metric" th:text="${result.matchScore} + '%'">0%</p>
+                </div>
+            </div>
+
+            <div class="card insight-card">
+                <h4>Role Match Summary</h4>
+                <p th:text="${result.summary}"></p>
+            </div>
+
+            <div class="card insight-card">
+                <h4>Strengths</h4>
+                <ul>
+                    <li th:each="item : ${result.strengths}" th:text="${item}"></li>
+                </ul>
+            </div>
+
+            <div class="card insight-card">
+                <h4>Gaps to Improve</h4>
+                <ul>
+                    <li th:each="item : ${result.gaps}" th:text="${item}"></li>
+                </ul>
+            </div>
+
+            <div class="card insight-card">
+                <h4>Suggested Jobs</h4>
+                <ul>
+                    <li th:each="item : ${result.suggestedJobs}" th:text="${item}"></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 AI Resume Analyzer</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Resume Analyzer</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" href="/">
+        <span class="brand-mark">AI</span>
+        <span>Resume Analyzer</span>
+    </a>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/analyze">Analyze</a>
+        <a href="/about">About</a>
+        <a href="#features">Features</a>
+    </nav>
+</header>
+
+<main class="page-shell">
+    <section class="hero hero-inline">
+        <div>
+            <span class="eyebrow">Smart matching for modern hiring</span>
+            <h1>Make every application feel tailored.</h1>
+            <p>Turn your resume into a polished, ATS-ready story with instant feedback, role-specific insights, and job-fit recommendations.</p>
+            <div class="button-row">
+                <a class="btn-link" href="/analyze">Analyze My Resume</a>
+                <a class="btn-link btn-secondary" href="#features">Explore Features</a>
+            </div>
+            <div class="trust-row">
+                <span>PDF & DOCX upload</span>
+                <span>ATS scoring</span>
+                <span>Skill gap insights</span>
+            </div>
+        </div>
+
+        <div class="hero-card">
+            <div class="panel-head">
+                <div>
+                    <p class="pill">Live preview</p>
+                    <h3>What you get in seconds</h3>
+                </div>
+            </div>
+            <ul>
+                <li>ATS alignment score with clear strengths and gaps</li>
+                <li>Tailored suggestions for your target job role</li>
+                <li>Actionable improvements to make your resume stand out</li>
+            </ul>
+            <div class="stats-grid">
+                <div class="stat">
+                    <strong>94%</strong>
+                    <small>match clarity</small>
+                </div>
+                <div class="stat">
+                    <strong>3x</strong>
+                    <small>faster review</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="card">
+            <h2>ATS Score</h2>
+            <p>Measure how well your resume aligns with recruiter screening systems and keyword expectations.</p>
+        </div>
+        <div class="card">
+            <h2>Skill Analysis</h2>
+            <p>Spot technical strengths, missing skills, and the best areas to improve for your target role.</p>
+        </div>
+        <div class="card">
+            <h2>Job Matching</h2>
+            <p>Receive practical role suggestions based on your experience, keywords, and career focus.</p>
+        </div>
+    </section>
+
+    <section class="showcase">
+        <div class="panel">
+            <h2>Upload or paste your resume</h2>
+            <p>Start with a file or paste your content to receive a practical, recruiter-style analysis immediately.</p>
+            <a class="btn-link" href="/analyze">Open Resume Analysis</a>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 AI Resume Analyzer</p>
+</footer>
+</body>
+</html>

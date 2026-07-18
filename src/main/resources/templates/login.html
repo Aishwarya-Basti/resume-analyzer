@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h2>AI Resume Analyzer</h2>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/analyze">Analyze</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Welcome Back</h1>
+    <p>Sign in to save and revisit your resume analysis reports.</p>
+    <div class="panel auth-panel" style="max-width: 750px; margin: 0 auto;">
+        <div th:if="${successMessage}" style="color: #166534; margin-bottom: 12px;" th:text="${successMessage}"></div>
+        <form action="/login" method="post">
+            <input type="text" name="username" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p style="margin-top: 12px;">New user? <a href="/register">Create an account</a></p>
+    </div>
+</section>
+</body>
+</html>

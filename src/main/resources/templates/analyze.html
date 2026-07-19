@@ -6,6 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+
 <header>
     <h2>AI Resume Analyzer</h2>
     <nav>
@@ -16,14 +17,19 @@
 </header>
 
 <main class="page-shell">
+
     <section class="hero hero-inline">
         <div>
             <p class="eyebrow">Resume intelligence</p>
             <h1>Analyze your resume against the role you want.</h1>
-            <p>Paste your resume content or upload a file, and receive an ATS-style report with strengths, gaps, and better-fit job ideas.</p>
+            <p>
+                Paste your resume content or upload a file, and receive an
+                ATS-style report with strengths, gaps, and better-fit job ideas.
+            </p>
         </div>
+
         <div class="hero-card">
-            <h3>What you’ll get</h3>
+            <h3>What you'll get</h3>
             <ul>
                 <li>ATS-friendly score</li>
                 <li>Strengths and growth areas</li>
@@ -33,109 +39,181 @@
     </section>
 
     <section id="features" class="workspace-grid">
+
+        <!-- Resume Form -->
         <div class="panel">
+
             <div class="panel-head">
                 <div>
-                    <h3>Resume analysis</h3>
-                    <p>Use one simple form to paste content or upload a file and get your report.</p>
+                    <h3>Resume Analysis</h3>
+                    <p>Paste your resume or upload a file.</p>
                 </div>
-                <span class="pill">Fast results</span>
+                <span class="pill">Fast Results</span>
             </div>
 
-            <form class="stacked-form" th:action="@{/analyze}" th:object="${request}" method="post" enctype="multipart/form-data">
-                <input type="text" th:field="*{jobTitle}" placeholder="Example: Java Backend Developer" required>
-                <textarea th:field="*{resumeText}" placeholder="Paste your resume content here..."></textarea>
-                <label class="upload-inline" for="resumeFile">
-                    <span>Or upload a resume file</span>
-                    <input id="resumeFile" type="file" th:field="*{resumeFile}" accept=".txt,.md,.pdf,.doc,.docx">
+            <form class="stacked-form"
+                  th:action="@{/analyze}"
+                  th:object="${request}"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <input type="text"
+                       th:field="*{jobTitle}"
+                       placeholder="Example: Java Backend Developer"
+                       required>
+
+                <textarea
+                        th:field="*{resumeText}"
+                        placeholder="Paste your resume here...">
+                </textarea>
+
+                <label class="upload-inline">
+                    <span>Upload Resume</span>
+
+                    <input
+                            type="file"
+                            th:field="*{resumeFile}"
+                            accept=".pdf,.doc,.docx,.txt">
                 </label>
-                <input type="number" th:field="*{experienceYears}" min="0" max="30" placeholder="Years of experience">
-                <button type="submit">Analyze Now</button>
+
+                <input
+                        type="number"
+                        th:field="*{experienceYears}"
+                        min="0"
+                        max="30"
+                        placeholder="Years of Experience">
+
+                <button type="submit">
+                    Analyze Resume
+                </button>
+
             </form>
 
-            <div th:if="${uploadError}" class="alert error" th:text="${uploadError}"></div>
+            <div class="alert error"
+                 th:if="${uploadError}"
+                 th:text="${uploadError}">
+            </div>
+
         </div>
 
-        <div class="panel results-panel" th:if="${result != null}">
+        <!-- Result Panel -->
+        <div class="panel results-panel"
+             th:if="${result != null}">
+
             <div class="panel-head">
                 <div>
-                    <h3>Analysis results</h3>
+                    <h3>Analysis Results</h3>
                     <p>Your resume insights are ready.</p>
                 </div>
-                <span class="pill soft">Live report</span>
+
+                <span class="pill soft">Live Report</span>
             </div>
 
             <div class="result-grid">
+
                 <div class="card">
                     <h4>ATS Score</h4>
-                    <p class="metric" th:text="${result.atsScore} + '%'">0%</p>
+                    <p class="metric"
+                       th:text="${result.atsScore + '%'}"></p>
                 </div>
+
                 <div class="card">
                     <h4>Match Score</h4>
-                    <p class="metric" th:text="${result.matchScore} + '%'">0%</p>
+                    <p class="metric"
+                       th:text="${result.matchScore + '%'}"></p>
                 </div>
+
             </div>
 
             <div class="card insight-card">
-                <h4>Role Match Summary</h4>
+                <h4>Summary</h4>
                 <p th:text="${result.summary}"></p>
             </div>
 
             <div class="card insight-card">
                 <h4>Strengths</h4>
+
                 <ul>
-                    <li th:each="item : ${result.strengths}" th:text="${item}"></li>
+                    <li th:each="item : ${result.strengths}"
+                        th:text="${item}">
+                    </li>
                 </ul>
             </div>
 
             <div class="card insight-card">
-                <h4>Gaps to Improve</h4>
+                <h4>Gaps</h4>
+
                 <ul>
-                    <li th:each="item : ${result.gaps}" th:text="${item}"></li>
+                    <li th:each="item : ${result.gaps}"
+                        th:text="${item}">
+                    </li>
                 </ul>
             </div>
 
             <div class="card insight-card">
                 <h4>Suggested Jobs</h4>
+
                 <ul>
-                    <li th:each="item : ${result.suggestedJobs}" th:text="${item}"></li>
+                    <li th:each="item : ${result.suggestedJobs}"
+                        th:text="${item}">
+                    </li>
                 </ul>
             </div>
+
+            <!-- Download PDF Button -->
+            <div style="margin-top:20px;text-align:center;">
+                <a th:href="@{/download-pdf}">
+                    <button type="button">
+                        📄 Download PDF Report
+                    </button>
+                </a>
+            </div>
+
         </div>
+
     </section>
+
     <!-- Previous Analysis History -->
-<section class="panel" th:if="${previousAnalyses != null and !previousAnalyses.isEmpty()}">
 
-    <div class="panel-head">
-        <div>
-            <h3>Previous Analysis History</h3>
-            <p>Your saved resume analyses.</p>
+    <section class="panel"
+             th:if="${previousAnalyses != null and !previousAnalyses.isEmpty()}">
+
+        <div class="panel-head">
+            <div>
+                <h3>Previous Analysis History</h3>
+                <p>Your saved analyses.</p>
+            </div>
         </div>
-    </div>
 
-    <table class="history-table">
-        <thead>
-        <tr>
-            <th>Job Title</th>
-            <th>ATS Score</th>
-            <th>Match Score</th>
-        </tr>
-        </thead>
+        <table class="history-table">
 
-        <tbody>
-        <tr th:each="analysis : ${previousAnalyses}">
-            <td th:text="${analysis.jobTitle}"></td>
-            <td th:text="${analysis.atsScore + '%'}"></td>
-            <td th:text="${analysis.matchScore + '%'}"></td>
-        </tr>
-        </tbody>
-    </table>
+            <thead>
+            <tr>
+                <th>Job Title</th>
+                <th>ATS Score</th>
+                <th>Match Score</th>
+            </tr>
+            </thead>
 
-</section>
+            <tbody>
+
+            <tr th:each="analysis : ${previousAnalyses}">
+                <td th:text="${analysis.jobTitle}"></td>
+                <td th:text="${analysis.atsScore + '%'}"></td>
+                <td th:text="${analysis.matchScore + '%'}"></td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
 </main>
 
 <footer>
     <p>© 2026 AI Resume Analyzer</p>
 </footer>
+
 </body>
 </html>

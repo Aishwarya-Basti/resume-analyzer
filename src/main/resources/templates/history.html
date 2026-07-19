@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Analysis History</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<header>
+    <h2>Resume Analysis History</h2>
+    <a href="/">Home</a>
+    <a href="/analyze">Analyze</a>
+</header>
+
+<main>
+    <h3>Your Previous Resume Analyses</h3>
+
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Job Title</th>
+                <th>ATS Score</th>
+                <th>Match Score</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="history : ${historyList}">
+                <td th:text="${history.createdAt}"></td>
+                <td th:text="${history.jobTitle}"></td>
+                <td th:text="${history.atsScore}"></td>
+                <td th:text="${history.matchScore}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</main>
+
+</body>
+</html>

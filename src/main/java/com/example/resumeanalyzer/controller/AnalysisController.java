@@ -23,7 +23,9 @@ public class AnalysisController {
     private final ResumeFileService resumeFileService;
     private final UserRepository userRepository;
 
-    public AnalysisController(ResumeAnalysisService resumeAnalysisService, ResumeFileService resumeFileService, UserRepository userRepository) {
+    public AnalysisController(ResumeAnalysisService resumeAnalysisService,
+                              ResumeFileService resumeFileService,
+                              UserRepository userRepository) {
         this.resumeAnalysisService = resumeAnalysisService;
         this.resumeFileService = resumeFileService;
         this.userRepository = userRepository;
@@ -42,54 +44,68 @@ public class AnalysisController {
      */
     private User getCurrentUser() {
         String email = getCurrentUserEmail();
-        if (email == null) return null;
+        if (email == null) {
+            return null;
+        }
         Optional<User> user = userRepository.findByEmail(email);
         return user.orElse(null);
     }
 
     @GetMapping("/analyze")
     public String showAnalysisForm(Model model) {
+
         model.addAttribute("request", new ResumeAnalysisRequest());
-        
+
         User currentUser = getCurrentUser();
         if (currentUser != null) {
-            model.addAttribute("previousAnalyses", resumeAnalysisService.getUserAnalyses(currentUser));
+            model.addAttribute("previousAnalyses",
+                    resumeAnalysisService.getUserAnalyses(currentUser));
         }
-        
+
         return "analyze";
     }
 
     @PostMapping("/analyze")
-    public String analyzeResume(@ModelAttribute("request") ResumeAnalysisRequest request, Model model) {
+    public String analyzeResume(@ModelAttribute("request") ResumeAnalysisRequest request,
+                                Model model) {
+
         User currentUser = getCurrentUser();
-        
+
         if (request.getResumeFile() != null && !request.getResumeFile().isEmpty()) {
             try {
                 String extractedText = resumeAnalysisService.extractTextFromFile(request.getResumeFile());
                 request.setResumeText(extractedText);
             } catch (Exception ex) {
-                model.addAttribute("uploadError", "Unable to read the uploaded resume file: " + ex.getMessage());
+                model.addAttribute("uploadError",
+                        "Unable to read the uploaded resume file: " + ex.getMessage());
+
+                if (currentUser != null) {
+                    model.addAttribute("previousAnalyses",
+                            resumeAnalysisService.getUserAnalyses(currentUser));
+                }
+
                 model.addAttribute("request", request);
                 return "analyze";
             }
         }
 
         ResumeAnalysisResult result = resumeAnalysisService.analyzeResume(request);
-        
-        // Save analysis to database if user is authenticated
+
         if (currentUser != null) {
             try {
                 resumeAnalysisService.saveAnalysis(currentUser, request, result);
             } catch (Exception ex) {
-                model.addAttribute("saveError", "Analysis completed but could not be saved.");
+                model.addAttribute("saveError",
+                        "Analysis completed but could not be saved.");
             }
-            
-            // Get updated analysis history
-            model.addAttribute("previousAnalyses", resumeAnalysisService.getUserAnalyses(currentUser));
+
+            model.addAttribute("previousAnalyses",
+                    resumeAnalysisService.getUserAnalyses(currentUser));
         }
-        
+
         model.addAttribute("result", result);
         model.addAttribute("request", request);
+
         return "analyze";
     }
 }

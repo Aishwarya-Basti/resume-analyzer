@@ -103,6 +103,35 @@
             </div>
         </div>
     </section>
+    <!-- Previous Analysis History -->
+<section class="panel" th:if="${previousAnalyses != null and !previousAnalyses.isEmpty()}">
+
+    <div class="panel-head">
+        <div>
+            <h3>Previous Analysis History</h3>
+            <p>Your saved resume analyses.</p>
+        </div>
+    </div>
+
+    <table class="history-table">
+        <thead>
+        <tr>
+            <th>Job Title</th>
+            <th>ATS Score</th>
+            <th>Match Score</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="analysis : ${previousAnalyses}">
+            <td th:text="${analysis.jobTitle}"></td>
+            <td th:text="${analysis.atsScore + '%'}"></td>
+            <td th:text="${analysis.matchScore + '%'}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</section>
 </main>
 
 <footer>
